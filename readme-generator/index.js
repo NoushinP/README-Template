@@ -1,8 +1,8 @@
-const generateMarkdown = require('./utils/generateMarkdown')  // imports from generatem... .js
+const generateMarkdown = require('./utils/generateMarkdown')
 
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { title } = require('process');
+
 
 
 inquirer
@@ -20,19 +20,37 @@ inquirer
             message: 'What is the description of your project?',
         },
 
-
-        // WHEN I click on the links in the Table of Contents
-        // THEN I am taken to the corresponding section of the README
         {
-            type: 'input',
+            type: 'list',
             name: 'tableOfContents',
-            message: 'List your table of contents?',
+            message: 'Pick your table of contents section',
+            choices: [
+                'Introduction',
+                'Sections/Chapters',
+                'Contact Me',
+            ],
         },
 
+
         {
-            type: 'input',
+            type: 'checkbox',
             name: 'installation',
             message: 'what is the installation process?',
+            choices: [
+                new inquirer.Separator(' = Types = '),
+                {
+                    name: 'Direct',
+                },
+                {
+                    name: 'Parallel',
+                },
+                {
+                    name: 'Phased',
+                },
+                {
+                    name: 'Single-location'
+                }
+            ]
         },
 
         {
@@ -41,9 +59,6 @@ inquirer
             message: 'What is your project used for?',
         },
 
-
-        // WHEN I choose a license for my application from a list of options
-        // THEN a badge for that license is added near the top of the README and a notice is added to the section of the README entitled License that explains which license the application is covered under
         {
             type: 'input',
             name: 'license',
@@ -60,8 +75,6 @@ inquirer
             message: 'What are you testing in this project?',
         },
 
-        // WHEN I enter my email address
-        // THEN this is added to the section of the README entitled Questions, with instructions on how to reach me with additional questions
         {
             type: 'input',
             name: 'questions',
@@ -83,9 +96,19 @@ inquirer
     ])
     .then((answers) => {
         console.log(answers)
-        const htmlPageContent = generateMarkdown(answers); //making string based on answers 
+        const htmlPageContent = generateMarkdown(answers);
 
         fs.writeFile('READMETEST.md', htmlPageContent, (err) =>
             err ? console.log(err) : console.log('Successfully created README.md!')
         );
     });
+
+function tableOfContents(item) {
+    const content = `- ${item}\n`;
+    fs.appendFileSync(readmePath, content, (err) => {
+        if (err) {
+            console.error('Error writing to README.md:', err);
+        }
+    });
+    console.log(`Added "${item}" to README.md`);
+}
