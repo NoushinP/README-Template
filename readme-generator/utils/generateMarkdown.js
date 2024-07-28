@@ -1,42 +1,86 @@
 function renderLicenseBadge(license) {
-  const badges = {
-    'MIT': 'https://img.shields.io/badge/License-MIT-yellow.svg',
-    'GPLv3': 'https://img.shields.io/badge/License-GPLv3-blue.svg',
-    'Apache 2.0': 'https://img.shields.io/badge/License-Apache%202.0-blue.svg',
-    'BSD 3-Clause': 'https://img.shields.io/badge/License-BSD%203--Clause-blue.svg',
-    'None': ''
-  };
-
-  return badges[license] || '';
+  if (license !== 'None') {
+    return `![GitHub license](https://img.shields.io/badge/license-${license.replace(' ', '_')}-blue.svg)`;
+  }
+  return '';
 }
+
+function renderLicenseLink(license) {
+  if (license !== 'None') {
+    return `\n* [License](#license)\n`;
+  }
+  return '';
+}
+
+function renderLicenseSection(license) {
+  if (license !== 'None') {
+    return `## License
+
+This project is licensed under the ${license} license.`;
+  }
+  return '';
+}
+
+
+
+
 
 
 function generateMarkdown(data) {
   return `# ${data.title}
 
+
   # Table of Contents
   ${data.tableOfContents}
+
+  ## Table of Contents
 
   # Description
   ${data.description}
 
-  # Installation
-  ${data.installation}
 
-  # Usage
-  ${data.usage}
+* [Installation](#installation)
+
+## Installation
+To install necessary dependencies, run the following command:
+\`\`\`
+${data.installation}
+\`\`\`
+
+
+## Usage
+${data.usage}
+
+  * [Usage](#usage)
+${renderLicenseLink(data.license)}
+* [Contributing](#contributing)
+
+
+${renderLicenseSection(data.license)}
 
   # License
   ${data.license}
+  ${renderLicenseBadge(data.license)}
 
   # Contributing
   ${data.contributing}
 
-  # Tests
-  ${data.tests}
+  ## Contributing
 
-  # Questions
-  ${data.questions}
+  ## Tests
+  To run tests, run the following command:
+  \`\`\`
+${data.test}
+\`\`\`
+
+* [Tests](#tests)
+
+* [Questions](#questions)
+
+## Questions
+If you have any questions contact me directly at ${
+    data.email
+  }. You can find more of my work at [${data.github}]
 
   # GitHub
   ${data.github}
